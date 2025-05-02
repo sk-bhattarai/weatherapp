@@ -1,0 +1,105 @@
+{% if weather_data %}
+    <style>
+        .weather-info {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+        .weather-icon {
+            width: 100px;
+            height: 100px;
+        }
+        .temperature {
+            font-size: 2.5em;
+            font-weight: bold;
+            color: #e81ad7;
+            margin: 10px 0;
+        }
+        .description {
+            font-size: 1.2em;
+            color: #666;
+            margin-bottom: 10px;
+        }
+        .details {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 10px;
+            margin: 20px 0;
+            padding: 10px;
+            background-color: #f8f9fa;
+            border-radius: 4px;
+        }
+        .detail-item {
+            text-align: center;
+        }
+        .detail-label {
+            font-size: 0.9em;
+            color: #666;
+        }
+        .detail-value {
+            font-weight: bold;
+            color: #4ae81a;
+        }
+        .forecast-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+            gap: 10px;
+            margin-top: 20px;
+        }
+        .forecast {
+            background-color: #f8f9fa;
+            padding: 10px;
+            border-radius: 4px;
+            text-align: center;
+        }
+        .forecast-day {
+            font-weight: bold;
+            margin-bottom: 5px;
+        }
+        .forecast-temp {
+            color: #e11ae8;
+            margin: 5px 0;
+        }
+        .forecast-icon {
+            width: 50px;
+            height: 50px;
+        }
+    </style>
+
+    <div class="weather-info">
+        <h2>{{ weather_data.city }}</h2>
+        <img class="weather-icon" src="http://openweathermap.org/img/w/{{ weather_data.icon }}.png" alt="{{ weather_data.description }}">
+        <div class="temperature">{{ weather_data.temperature }}°C</div>
+        <div class="description">{{ weather_data.description }}</div>
+        
+        <div class="details">
+            <div class="detail-item">
+                <div class="detail-label">Humidity</div>
+                <div class="detail-value">{{ weather_data.humidity }}%</div>
+            </div>
+            <div class="detail-item">
+                <div class="detail-label">Wind Speed</div>
+                <div class="detail-value">{{ weather_data.wind_speed }} m/s</div>
+            </div>
+            <div class="detail-item">
+                <div class="detail-label">Pressure</div>
+                <div class="detail-value">{{ weather_data.pressure }} hPa</div>
+            </div>
+        </div>
+    </div>
+
+    {% if daily_forecasts %}
+        <h3>5-Day Forecast</h3>
+        <div class="forecast-container">
+            {% for forecast in daily_forecasts %}
+                <div class="forecast">
+                    <div class="forecast-day">{{ forecast.day }}</div>
+                    <img class="forecast-icon" src="http://openweathermap.org/img/w/{{ forecast.icon }}.png" alt="{{ forecast.description }}">
+                    <div class="forecast-temp">
+                        {{ forecast.min_temp }}°C - {{ forecast.max_temp }}°C
+                    </div>
+                    <div class="forecast-description">{{ forecast.description }}</div>
+                </div>
+            {% endfor %}
+        </div>
+    {% endif %}
+{% endif %}
