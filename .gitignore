@@ -41,6 +41,7 @@ env/
 # Environment variables
 .env
 .env.local
+.env.*
 
 # API Keys
 API_KEY 

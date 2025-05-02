@@ -2,10 +2,19 @@ from django.shortcuts import render
 from django.contrib import messages
 import requests
 import datetime
+import os
+from dotenv import load_dotenv
 from .models import WeatherSearch
 
+# Load environment variables
+load_dotenv()
+
 def index(request):
-    API_KEY = '1759247bd0be8e875e795f249b7d8aee'  # Your API key
+    API_KEY = os.getenv('OPENWEATHER_API_KEY')
+    if not API_KEY:
+        messages.error(request, "API key not found. Please set OPENWEATHER_API_KEY in your environment variables.")
+        return render(request, "weatherapp/index.html")
+
     current_weather_url = "https://api.openweathermap.org/data/2.5/weather?q={}&appid={}&units=metric"
     forecast_url = "https://api.openweathermap.org/data/2.5/forecast?q={}&appid={}&units=metric"
 
@@ -104,7 +113,7 @@ def fetch_weather_and_forecast(city, api_key, current_weather_url, forecast_url)
             }
     
     # Convert daily_data dictionary to a list of the first 5 days
-    daily_forecasts = list(daily_data.values())[:4]
+    daily_forecasts = list(daily_data.values())[:5]
     
     return weather_info, daily_forecasts
 
